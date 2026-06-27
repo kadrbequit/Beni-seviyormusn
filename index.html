@@ -264,7 +264,7 @@
     <div class="card" id="kart">
         <!-- BİRİNCİ FOTOĞRAF (Pinterest Linki) -->
         <img 
-            src="https://i.pinimg.com/236x/3e/2a/8c/3e2a8c3c3c3c3c3c3c3c3c3c3c3c3c3c.jpg" 
+            src="foto1.jpg" 
             alt="Sevimli kedi" 
             class="foto" 
             id="profilFoto"
@@ -281,7 +281,7 @@
 
         <!-- İKİNCİ FOTOĞRAF (Evet sonrası) -->
         <div class="cevap-mesaji" id="cevapMesaji">
-            <img src="https://i.pinimg.com/236x/4f/8b/9c/4f8b9c3c3c3c3c3c3c3c3c3c3c3c3c3c.jpg" alt="Mutlu kedi" id="mesajFoto" onerror="this.src='https://picsum.photos/seed/2/100/100'" />
+            <img src="foto2.jpg" alt="Mutlu kedi" id="mesajFoto" onerror="this.src='https://picsum.photos/seed/2/100/100'" />
             <span>Bende seni seviyorum yavrummm! 💕</span>
         </div>
     </div>
@@ -295,12 +295,9 @@
             const cevapMesaji = document.getElementById('cevapMesaji');
             const profilFoto = document.getElementById('profilFoto');
             const mesajFoto = document.getElementById('mesajFoto');
-
-            // Pinterest'ten aldığım gerçek görsel linkleri (örnek)
-            // NOT: Pinterest doğrudan görsel linki vermez, bu yüzden gerçek görsel URL'lerini bulup eklemelisin.
-            // Aşağıdaki linkler örnektir, gerçek linkleri kendi bulmalısın.
-            const ilkFoto = 'https://i.pinimg.com/236x/3e/2a/8c/3e2a8c3c3c3c3c3c3c3c3c3c3c3c3c3c.jpg';
-            const ikinciFoto = 'https://i.pinimg.com/236x/4f/8b/9c/4f8b9c3c3c3c3c3c3c3c3c3c3c3c3c3c.jpg';
+.
+            const ilkFoto = 'foto1.jpg';
+            const ikinciFoto = 'foto2.jpg';
 
             // Eğer fotoğraf yüklenmezse yedek
             profilFoto.onerror = function() {
