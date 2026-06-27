@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Beni Seviyor musun?</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ff6b8a, #ff2d55, #c0395b);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Uçan kalpler */
+        .uçan-kalp {
+            position: fixed;
+            font-size: 30px;
+            animation: uçuş 12s linear infinite;
+            opacity: 0.2;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes uçuş {
+            0% {
+                transform: translateY(100vh) rotate(0deg) scale(0.5);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.2;
+            }
+            90% {
+                opacity: 0.2;
+            }
+            100% {
+                transform: translateY(-10vh) rotate(720deg) scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(20px);
+            padding: 40px 30px;
+            border-radius: 60px 60px 40px 40px;
+            box-shadow: 0 30px 60px rgba(192, 57, 91, 0.4);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            position: relative;
+            z-index: 1;
+            animation: kartIşıltısı 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes kartIşıltısı {
+            0% { box-shadow: 0 30px 60px rgba(192, 57, 91, 0.4); }
+            100% { box-shadow: 0 30px 80px rgba(255, 45, 85, 0.8); }
+        }
+
+        .foto {
+            width: 100%;
+            max-width: 300px;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 6px solid #ff2d55;
+            box-shadow: 0 10px 30px rgba(255, 45, 85, 0.4);
+            margin-bottom: 25px;
+            transition: all 0.4s ease;
+        }
+
+        .foto:hover {
+            transform: scale(1.05) rotate(-3deg);
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            color: #c0395b;
+            margin-bottom: 20px;
+            font-weight: 700;
+            animation: başlıkAtışı 2s ease-in-out infinite;
+        }
+
+        @keyframes başlıkAtışı {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .soru {
+            font-size: 1.8rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #ff2d55, #ff6b8a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 15px 0 25px;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+            position: relative;
+            min-height: 90px;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 14px 42px;
+            font-size: 1.4rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 100px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            letter-spacing: 1px;
+            user-select: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-evet {
+            background: linear-gradient(135deg, #ff2d55, #ff6b8a);
+            color: white;
+            box-shadow: 0 8px 0 #a9324a;
+        }
+
+        .btn-evet:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 12px 0 #a9324a;
+        }
+
+        .btn-evet:active {
+            transform: translateY(5px);
+            box-shadow: 0 4px 0 #a9324a;
+        }
+
+        .btn-hayir {
+            background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+            color: white;
+            box-shadow: 0 8px 0 #5d6d7e;
+            transition: all 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .btn-hayir:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 0 #5d6d7e;
+        }
+
+        .btn-hayir:active {
+            transform: translateY(5px);
+            box-shadow: 0 4px 0 #5d6d7e;
+        }
+
+        .btn-hayir.kaç {
+            position: absolute !important;
+            transition: all 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .cevap-mesaji {
+            display: none;
+            margin-top: 25px;
+            padding: 25px 20px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 200, 210, 0.95));
+            border-radius: 50px;
+            font-size: 2rem;
+            color: #c0395b;
+            font-weight: 700;
+            animation: kalpAtışı 1s ease-in-out infinite alternate;
+            border: 3px solid #ff2d55;
+            box-shadow: 0 10px 30px rgba(255, 45, 85, 0.3);
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        @keyframes kalpAtışı {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); background: linear-gradient(135deg, rgba(255, 200, 210, 0.95), rgba(255, 150, 180, 0.95)); }
+        }
+
+        .cevap-mesaji img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #ff2d55;
+            box-shadow: 0 5px 20px rgba(255, 45, 85, 0.3);
+        }
+
+        .cevap-mesaji span {
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        /* Mobil */
+        @media (max-width: 480px) {
+            .card {
+                padding: 25px 20px;
+            }
+            .foto {
+                max-width: 200px;
+                height: 200px;
+            }
+            .btn {
+                padding: 12px 28px;
+                font-size: 1.2rem;
+            }
+            .soru {
+                font-size: 1.4rem;
+            }
+            .cevap-mesaji {
+                font-size: 1.5rem;
+                padding: 20px 15px;
+            }
+            .cevap-mesaji img {
+                width: 60px;
+                height: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Uçan kalpler -->
+    <div class="uçan-kalp" style="left: 5%; animation-delay: 0s;">❤️</div>
+    <div class="uçan-kalp" style="left: 15%; animation-delay: 3s;">💕</div>
+    <div class="uçan-kalp" style="left: 30%; animation-delay: 6s;">❤️</div>
+    <div class="uçan-kalp" style="left: 50%; animation-delay: 2s;">💗</div>
+    <div class="uçan-kalp" style="left: 65%; animation-delay: 4s;">❤️</div>
+    <div class="uçan-kalp" style="left: 80%; animation-delay: 7s;">💕</div>
+    <div class="uçan-kalp" style="left: 92%; animation-delay: 1s;">❤️</div>
+
+    <div class="card" id="kart">
+        <!-- BİRİNCİ FOTOĞRAF (Pinterest Linki) -->
+        <img 
+            src="https://i.pinimg.com/236x/3e/2a/8c/3e2a8c3c3c3c3c3c3c3c3c3c3c3c3c3c.jpg" 
+            alt="Sevimli kedi" 
+            class="foto" 
+            id="profilFoto"
+            onerror="this.src='https://picsum.photos/seed/1/300/300'"
+        />
+
+        <h1>💖 Bir Soru Var</h1>
+        <div class="soru" id="soruMetni">Beni seviyor musun?</div>
+
+        <div class="button-group" id="butonGrubu">
+            <button class="btn btn-evet" id="evetBtn">Evet ❤️</button>
+            <button class="btn btn-hayir" id="hayirBtn">Hayır 💔</button>
+        </div>
+
+        <!-- İKİNCİ FOTOĞRAF (Evet sonrası) -->
+        <div class="cevap-mesaji" id="cevapMesaji">
+            <img src="https://i.pinimg.com/236x/4f/8b/9c/4f8b9c3c3c3c3c3c3c3c3c3c3c3c3c3c.jpg" alt="Mutlu kedi" id="mesajFoto" onerror="this.src='https://picsum.photos/seed/2/100/100'" />
+            <span>Bende seni seviyorum yavrummm! 💕</span>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            const evetBtn = document.getElementById('evetBtn');
+            const hayirBtn = document.getElementById('hayirBtn');
+            const soruMetni = document.getElementById('soruMetni');
+            const butonGrubu = document.getElementById('butonGrubu');
+            const cevapMesaji = document.getElementById('cevapMesaji');
+            const profilFoto = document.getElementById('profilFoto');
+            const mesajFoto = document.getElementById('mesajFoto');
+
+            // Pinterest'ten aldığım gerçek görsel linkleri (örnek)
+            // NOT: Pinterest doğrudan görsel linki vermez, bu yüzden gerçek görsel URL'lerini bulup eklemelisin.
+            // Aşağıdaki linkler örnektir, gerçek linkleri kendi bulmalısın.
+            const ilkFoto = 'https://i.pinimg.com/236x/3e/2a/8c/3e2a8c3c3c3c3c3c3c3c3c3c3c3c3c3c.jpg';
+            const ikinciFoto = 'https://i.pinimg.com/236x/4f/8b/9c/4f8b9c3c3c3c3c3c3c3c3c3c3c3c3c3c.jpg';
+
+            // Eğer fotoğraf yüklenmezse yedek
+            profilFoto.onerror = function() {
+                this.src = 'https://picsum.photos/seed/1/300/300';
+            };
+            mesajFoto.onerror = function() {
+                this.src = 'https://picsum.photos/seed/2/100/100';
+            };
+
+            function hayirKac() {
+                const btnWidth = hayirBtn.offsetWidth;
+                const btnHeight = hayirBtn.offsetHeight;
+                
+                const maxX = butonGrubu.clientWidth - btnWidth - 15;
+                const maxY = butonGrubu.clientHeight - btnHeight - 15;
+
+                if (maxX < 0 || maxY < 0) {
+                    hayirBtn.style.position = 'relative';
+                    hayirBtn.style.left = 'auto';
+                    hayirBtn.style.top = 'auto';
+                    hayirBtn.classList.remove('kaç');
+                    return;
+                }
+
+                const rndX = Math.floor(Math.random() * (maxX + 1));
+                const rndY = Math.floor(Math.random() * (maxY + 1));
+
+                hayirBtn.style.position = 'absolute';
+                hayirBtn.style.left = rndX + 'px';
+                hayirBtn.style.top = rndY + 'px';
+                hayirBtn.classList.add('kaç');
+            }
+
+            hayirBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                hayirKac();
+            });
+
+            hayirBtn.addEventListener('mouseenter', function() {
+                if (cevapMesaji.style.display === 'none' || cevapMesaji.style.display === '') {
+                    hayirKac();
+                }
+            });
+
+            evetBtn.addEventListener('click', function() {
+                profilFoto.src = ikinciFoto;
+                mesajFoto.src = ikinciFoto;
+
+                soruMetni.style.display = 'none';
+                butonGrubu.style.display = 'none';
+                cevapMesaji.style.display = 'flex';
+            });
+
+            window.addEventListener('load', function() {
+                hayirBtn.style.position = 'relative';
+                hayirBtn.style.left = 'auto';
+                hayirBtn.style.top = 'auto';
+                hayirBtn.classList.remove('kaç');
+                cevapMesaji.style.display = 'none';
+            });
+
+            window.addEventListener('resize', function() {
+                if (hayirBtn.style.position === 'absolute') {
+                    hayirBtn.style.position = 'relative';
+                    hayirBtn.style.left = 'auto';
+                    hayirBtn.style.top = 'auto';
+                    hayirBtn.classList.remove('kaç');
+                }
+            });
+        })();
+    </script>
+</body>
+</html>
